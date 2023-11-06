@@ -1,0 +1,243 @@
+﻿@model RedNit_Airline.Models.ChuyenBay
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    <link href="~/Content/imageStyle.css" rel="stylesheet" />
+
+}
+
+<div class="banner">
+    <img src="~/Content/img/banner.jpg" alt="Image 1" class="banner-image active" />
+    <img src="~/Content/img/banner3.jpg" alt="Image 3" class="banner-image" />
+</div>
+
+<body>
+    <script>
+        function changeForm(type) {
+            var ngayVe = document.getElementById('ngayVe');
+
+            if (type === 'khuHoi') {
+                ngayVe.style.display = 'block';
+
+            } else if (type === 'motChieu') {
+                ngayVe.style.display = 'none';
+
+            } else if (type === 'nhieuChang') {
+                ngayVe.style.display = 'block';
+
+            }
+        }
+
+        function changePassengerCount(fieldId, change) {
+            const inputField = document.getElementById(fieldId);
+            let newValue = parseInt(inputField.value) + change;
+            if (newValue < 0) {
+                newValue = 0; // Đảm bảo giá trị không âm
+            }
+            inputField.value = newValue;
+            updateTotalPassengers();
+        }
+
+        function updateTotalPassengers() {
+            const soNguoiLon = parseInt(document.getElementById('soNguoiLon').value);
+            const soTreEm = parseInt(document.getElementById('soTreEm').value);
+            const soTreEmDuoi2 = parseInt(document.getElementById('soTreEmDuoi2').value);
+            const totalPassengers = soNguoiLon + soTreEm + soTreEmDuoi2;
+            document.getElementById('totalPassengers').value = totalPassengers;
+        }
+
+        function toggleInputsVisibility() {
+            const hanhKhach = document.getElementById('hanhKhach');
+            if (hanhKhach.style.display === 'none') {
+                hanhKhach.style.display = 'block';
+            } else {
+                hanhKhach.style.display = 'none';
+            }
+        }
+    </script>
+
+    @using (Html.BeginForm("TimKiemChuyenBay", "Home", FormMethod.Get))
+    {
+        <div class="form-container">
+            <div class="buttons-row">
+                <div class="button-container">
+                    <button type="button" onclick="changeForm('khuHoi')">Khứ hồi</button>
+                    <button type="button" onclick="changeForm('motChieu')">Một chiều</button>
+                    <button type="button" onclick="changeForm('nhieuChang')">Nhiều chặng</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="column">
+                    <label for="diemDi">Điểm đi:</label>
+                    @Html.DropDownList("diemDi", ViewBag.DiemDi as SelectList, new { @required = "required" })
+                </div>
+
+                <div class="column">
+                    <label for="diemDen">Điểm đến:</label>
+                    @Html.DropDownList("diemDen", ViewBag.DiemDen as SelectList, new { @required = "required" })
+                </div>
+
+                <div class="column">
+                    <label for="ngayDi">Ngày đi:</label>
+                    @Html.TextBoxFor(model => model.NgayDi, new { @id = "ngayDi", @type = "date", @required = "required" })
+                </div>
+
+                <div class="column">
+                    <div id="ngayVe" style="display: none;">
+                        <label for="ngayVe">Ngày về:</label>
+                        @Html.TextBoxFor(model => model.NgayVe, new { @id = "ngayVe", @type = "date" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="total-passenger-row">
+                <label for="totalPassengers">Hành khách:</label>
+                <input type="text" id="totalPassengers" name="TotalPassengers" readonly onclick="toggleInputsVisibility()" />
+                <div id="hanhKhach" style="display: none;">
+                    <div class="numeric-input" id="numericInputAdult">
+                        <input type="number" id="soNguoiLon" name="SoNguoiLon" min="0" value="0" />
+                        <button type="button" onclick="changePassengerCount('soNguoiLon', 1)">+</button>
+                        <button type="button" onclick="changePassengerCount('soNguoiLon', -1)">-</button>
+                    </div>
+                    <div class="numeric-input" id="numericInputChild">
+                        <input type="number" id="soTreEm" name="SoTreEm" min="0" value="0" />
+                        <button type="button" onclick="changePassengerCount('soTreEm', 1)">+</button>
+                        <button type="button" onclick="changePassengerCount('soTreEm', -1)">-</button>
+                    </div>
+                    <div class="numeric-input" id="numericInputInfant">
+                        <input type="number" id="soTreEmDuoi2" name="SoTreEmDuoi2" min="0" value="0" />
+                        <button type="button" onclick="changePassengerCount('soTreEmDuoi2', 1)">+</button>
+                        <button type="button" onclick="changePassengerCount('soTreEmDuoi2', -1)">-</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-container">
+                <input type="submit" value="Tìm kiếm">
+            </div>
+
+        </div>
+    }
+</body>
+
+
+<div>
+    <div class="des-fm1">
+        <div class="row-jvh">
+            <div class="col-tfm col-j6j title-cks" style="padding-top: 20px;">
+                <h2>
+                    KHÁM PHÁ ĐIỂM ĐẾN
+                </h2>
+            </div>
+            <div class="col-c7o col-j6j col-s39">
+                <div class="box-d69 overlay-vaa style-rzSHY" id="style-rzSHY">
+                    <img src="~/Content/img/tokyo.jpg" />
+                    <span class="line-o5i">
+                    </span>
+                    <div class="des-t1o">
+                        <p class="cit-57r">
+                            Tokyo – Thủ đô của hiện đại và truyền thống
+                        </p>
+                        <p>
+                            <a href="#" class="btn-ceh">
+                                KHÁM PHÁ
+                            </a>
+                        </p>
+                        <p>
+                            &nbsp;
+                        </p>
+                        <p class="title-yav">
+                            &nbsp;
+                        </p>
+                    </div>
+                    <a href="#" class="link-hiy">
+                    </a>
+                </div>
+            </div>
+            <div class="col-c7o col-j6j col-s39">
+                <div class="box-d69 overlay-vaa style-3mhLI" id="style-3mhLI">
+                    <span class="line-o5i">
+                    </span>
+                    <div class="des-t1o">
+                        <p class="cit-57r">
+                            Phú Quốc – Hòn ngọc quý
+                        </p>
+                        <p>
+                            <a href="#" class="btn-ceh">
+                                KHÁM PHÁ
+                            </a>
+                        </p>
+                        <p>
+                            &nbsp;
+                        </p>
+                        <p class="title-yav">
+                            &nbsp;
+                        </p>
+                    </div>
+                    <a href="#" class="link-hiy">
+                    </a>
+                </div>
+            </div>
+            <div class="col-c7o col-j6j med-zgd col-s39">
+                <div class="box-d69 overlay-vaa style-K2dt3" id="style-K2dt3">
+                    <span class="line-o5i">
+                    </span>
+                    <div class="des-t1o">
+                        <p class="cit-57r">
+                            Bangkok – Thiên đường ăn chơi và mua sắm Đông Nam Á
+                        </p>
+                        <p>
+                            <a href="#" class="btn-ceh">
+                                KHÁM PHÁ
+                            </a>
+                        </p>
+                        <p>
+                            &nbsp;
+                        </p>
+                        <p class="title-yav">
+                            &nbsp;
+                        </p>
+                    </div>
+                    <a href="#" class="link-hiy">
+                    </a>
+                </div>
+                <div class="box-d69 overlay-vaa style-wjQ7F" id="style-wjQ7F">
+                    <span class="line-o5i">
+                    </span>
+                    <div class="des-t1o">
+                        <p class="cit-57r">
+                            Đà Lạt – Một Paris thu nhỏ
+                        </p>
+                        <p>
+                            <a href="#" class="btn-ceh">
+                                KHÁM PHÁ
+                            </a>
+                        </p>
+                        <p>
+                            &nbsp;
+                        </p>
+                        <p class="title-yav">
+                            &nbsp;
+                        </p>
+                    </div>
+                    <a href="#" class="link-hiy">
+                    </a>
+                </div>
+            </div>
+            <p>
+                &nbsp;
+            </p>
+            <a href="#" class="view-otz">
+                tất cả điểm đến
+            </a>
+            <div id="gtx-tdd" class="style-1oXmo">
+                <div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/Scripts/imageFunc.js")

@@ -1,0 +1,32 @@
+﻿@model IEnumerable<RedNit_Airline.Models.KhachHang>
+
+@{
+    ViewBag.Title = "KhachHangList";
+}
+
+<h2>KhachHangList</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Họ tên</th>
+            <th>Ngày Sinh</th>
+            <th>Giới tính</th>
+            <th>Sdt</th>
+            <th>Quốc tịch</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var khachHang in Model)
+        {
+            <tr>
+                <td>@khachHang.HoTen</td>
+                <td>@khachHang.NgaySinh.ToDateTime()</td>
+                <td>@khachHang.GioiTinh</td>
+                <td>@khachHang.Sdt</td>
+                <td>@khachHang.QuocTich</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

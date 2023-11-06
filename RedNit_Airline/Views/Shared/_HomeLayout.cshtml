@@ -1,0 +1,314 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REDNIT-Chào mừng các con giời đến với hãng hàng không REDNIT</title>
+
+    @RenderSection("styles", false)
+
+    <link rel="stylesheet" href="~/Content/homeStyle.css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+
+    <script src="~/Scripts/JavaScript.js"></script>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body style="padding:0">
+    <div class="wrapper-863">
+        <div class="container-bsp">
+            <nav id="nav-9ne" class="navbar-own" style="margin-top:15px;">
+                <div class="header-dg8">
+                    <button type="button" class="navbar-lxy" value="button_hamburger">
+                        <span> </span>
+                        <span> </span>
+                        <span> </span>
+                    </button>
+                    <div class="logo-amo" style="margin-top:-70px; left:-50px;">
+                        <a class="navbar-brand-ovj" href="/TrangChu/Index">
+                            <img class="img-wrr" src="~/Content/img/logo.png">
+                            <img class="img-wrr block-chs" src="~/Content/img/logo.png">
+                        </a>
+                    </div>
+                    <div class="block-chs">
+                        <a href="#">
+                            <img class="img-wrr" src="~/Content/img/logo.png">
+                        </a>
+                    </div>
+                </div>
+            </nav>
+            <div class="navbar-collapse-q9k ani-h8x" id="nav-yxd">
+                <div class="header-zv7 ope-a3p">
+                    <div class="site-zr1">
+                        <button type="button" class="block-chs" style="z-index: 1">
+                            <span> </span>
+                            <span> </span>
+                            <span> </span>
+                        </button>
+                        <ul class="reg-cjy" style="margin-top:10px;">
+                            <li class="logo-c3n">
+                                @if (Session["NameKH"] == null)
+                                {
+                                    <a href="~/TrangChu/Login">
+                                        <p> ĐĂNG NHẬP </p>
+                                    </a>
+                                    <p style="border-left: 1px solid #ccc">
+                                        <a href="~/TrangChu/Register" style="color:#ff0000"> ĐĂNG KÝ </a>
+                                    </p>
+                                }
+                                else
+                                {
+                                <li style="display: inline-block; padding-right:10px; margin: auto; font-size: 20px; " class="nav-link dropdown ">
+                                    <span class="nav-link dropdown-toggle link-dark" data-bs-toggle="dropdown">@Session["NameKH"]</span>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a style="font-size:17px;" class="dropdown-item" href="@Url.Action("Detail", "TrangChu", new { khID = Session["KhID"]})">
+                                                Thông tin tài khoản
+                                            </a>
+                                        </li>
+                                        <li><a style="font-size:17px;" class="dropdown-item" href="~/Home/LichSu">Lịch sử dat ve</a></li>
+                                        <li><a style="font-size:17px;" class="dropdown-item" href="~/TrangChu/Logout">Đăng xuất</a></li>
+                                    </ul>
+                                </li>
+                                }
+                                <li class="search-4bd">
+                                    <a href="#">
+                                        " Search "
+                                        <i class="icon-ipl search-fos"></i>
+                                    </a>
+                                    <div class="popover-nyl">
+                                        <a href="#" class="icon-m8s"> Search </a>
+                                        <div class="form-group-tp4 move-gtl">
+                                            <div>
+                                                <input id="top-rso" type="text" class="form-control-oht search-13s input-4p2" />
+                                                <label for="topnav-search" class="label-43j"> Tìm kiếm </label>
+                                                <input type="button" class="search-n9x" id="btF-8po" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <ul class="nav-oel navbar-nav-xtn nav-jnx">
+                            <li class="dropdown-js7">
+                                <a class="dropdown-kom" href="/vn/vi/plan-book">
+                                    <span>
+                                        Giới thiệu
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="dropdown-js7">
+                                <a class="dropdown-kom act-nmo" href="~/TrangChu/DanhSachChuyenBay">
+                                    <span>
+                                        Danh sách chuyến bay
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="dropdown-js7">
+                                <a class="dropdown-kom" href="/vn/vi/buy-tickets-other-products">
+                                    <span>
+                                        Mua vé &amp; Sản phẩm khác
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="dropdown-js7">
+                                <a class="dropdown-kom" href="/vn/vi/lotusmile">
+                                    <span>
+                                        Lotusmiles
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container body-content" style="width:auto; height:auto;">
+            @RenderBody()
+            <hr />
+            <footer class="footer-rq6">
+                <div class="container-hox">
+                    <nav class="navbar-47g footer-q7x">
+                        <ul class="nav-mce navbar-nav-b93">
+                            <li class="dropdown-meo">
+                                <a class="dropdown-ja3" href="/vn/vi/vietnam-airlines">
+                                    <h4>
+                                        RedNit Airlines
+                                    </h4>
+                                </a>
+                                <ul class="dropdown-menu-viq">
+                                    <li>
+                                        <a href="#">
+                                            Giới thiệu công ty
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            Đặt vé
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            Quan hệ cổ đông
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-meo">
+                                <a class="dropdown-ja3" href="/vn/vi/legal">
+                                    <h4>
+                                        Pháp lý
+                                    </h4>
+                                </a>
+                                <ul class="dropdown-menu-viq">
+                                    <li>
+                                        <a href="/vn/vi/legal/terms-and-conditions">
+                                            Các Điều Kiện &amp; Điều Khoản
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/vn/vi/legal/conditions-of-carriage">
+                                            Điều Lệ Vận Chuyển
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/vn/vi/legal/cookies-policy">
+                                            Điều Kiện Sử Dụng Cookies
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/vn/vi/legal/privacy-policy">
+                                            Bảo Mật Thông Tin
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/vn/vi/legal/quy-che-hoat-dong-san-tmdt">
+                                            Quy Chế Hoạt Động Sàn TMĐT
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-meo">
+                                <a class="dropdown-ja3" href="/vn/vi/support">
+                                    <h4>
+                                        Hỗ Trợ
+                                    </h4>
+                                </a>
+                                <ul class="dropdown-menu-viq">
+                                    <li>
+                                        <a href="/vn/vi/support/claim-suggestion">
+                                            Góp ý dịch vụ
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/vn/vi/support/customer-care">
+                                            Trung tâm Trợ giúp
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/vn/vi/support/customer-service-plan">
+                                            Chính Sách Bảo Vệ Hành Khách
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/vn/vi/support/vn-mobile-app">
+                                            Ứng Dụng Di Động
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-meo">
+                                <a class="dropdown-ja3" href="/vn/vi/useful-information">
+                                    <h4>
+                                        Thông Tin Hữu Ích
+                                    </h4>
+                                </a>
+                                <ul class="dropdown-menu-viq">
+                                    <li>
+                                        <a href="/vn/vi/useful-information/huong-dan">
+                                            Cẩm nang mua vé online
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <div>
+                            &nbsp;
+                        </div>
+                    </nav>
+                    <div>
+                        <div class="footer-rjh">
+                            <div class="footer-is1">
+                                <div class="icon-1hg">
+                                    <ul>
+                                        <li>
+                                            <a class="icon-5th" href="#">
+                                                Facebook
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="icon-ytm" href="#">
+                                                Youtube
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="icon-zdt" href="#">
+                                                Instagram
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="icon-1hg">
+                                    <ul class="footer-swk">
+                                        <li>
+                                            <a href="/vn/vi/agency">
+                                                Đại lý
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/vn/vi/sitemap">
+                                                Sơ đồ website
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="info-6jk">
+                                <p class="con-9ov">
+                                    <img src="https://www.vietnamairlines.com/~/media/Images/icon/typicons_2-0-7_phone-outline_256_0_d9f6ff_none.png">
+                                    &nbsp; Trung tâm chăm sóc khách hàng tại Việt Nam (24/7):
+                                    <span id="style-2mma2" class="style-2mma2">
+                                        1900 1100
+                                    </span>
+                                    &nbsp;
+                                    <br>
+                                    <img src="https://www.vietnamairlines.com/~/media/Images/icon/typicons_2-0-7_mail_256_0_d9f6ff_none">
+                                    &nbsp; Email:
+                                    <a href="mailto:Telesales@rednitairlines.com">
+                                        Telesales@rednitairlines.com
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="footer-nay">
+                            <p>
+                                &copy; @DateTime.Now.Year RedNit Airlines.
+                                <br>
+                                Tổng công ty Hàng không Việt Nam - CTCP. Số 10 QL22, Tân Xuân, Hóc Môn, Tp.HCM
+                                <br>
+                                Điện thoại:
+                                <a href="tel:+84912345678" class="footer-pxj">
+                                    (+84-91) 2345678.
+                                </a>
+                                . Fax: (+84-91) 2345678.
+                                <br>
+                                Giấy chứng nhận đăng ký doanh nghiệp, mã số doanh nghiệp: 0100107518, đăng ký lần đầu ngày 05/10/2023, đăng ký thay đổi lần thứ 1 ngày 05/10/2023, cấp bởi Sở KHĐT thành phố HUFLIT.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </body>
+</html>

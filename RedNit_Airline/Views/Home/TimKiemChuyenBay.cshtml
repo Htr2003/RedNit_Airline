@@ -1,0 +1,35 @@
+﻿@model IEnumerable<RedNit_Airline.Models.ChuyenBay> 
+
+@{
+    ViewBag.Title = "TimKiemChuyenBay";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+@if (Model != null)
+{
+    <table>
+        <tr>
+            <th>Điểm Đi</th>
+            <th>Điểm Đến</th>
+            <th>Ngày Đi</th>
+            <th>Ngày Về</th>
+            <!-- Thêm các cột khác của ChuyenBay theo cần thiết -->
+        </tr>
+
+        @foreach (var chuyenBay in Model)
+        {
+            <tr>
+                <td>@chuyenBay.DiemDi</td>
+                <td>@chuyenBay.DiemDen</td>
+                <td>@chuyenBay.NgayDi</td>
+                <td>@chuyenBay.NgayVe</td>
+                <!-- Thêm các cột khác của ChuyenBay theo cần thiết -->
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <p>Không tìm thấy chuyến bay phù hợp.</p>
+}
+

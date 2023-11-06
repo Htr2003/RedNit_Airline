@@ -1,0 +1,18 @@
+﻿
+.banner {
+    width: 100%;
+    max-width: 1290px; /* Thay đổi kích thước banner theo ý muốn */
+    max-height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.banner-image {
+    width: 100%;
+    display: none;
+    transition: opacity 1s ease-in-out;
+}
+
+.active {
+    display: block;
+}
