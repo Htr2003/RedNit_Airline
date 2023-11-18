@@ -110,44 +110,69 @@ namespace RedNit_Airline.Controllers
             return View("TimKiemChuyenBay", ketQua);
         }
 
-        [HttpGet]
-        public ActionResult BookFlight(string flightId)
+        public async Task<List<ChuyenBay>> GetDanhSachChuyenBayAsync()
         {
-            // Lấy thông tin chuyến bay từ Firestore
-            ChuyenBay flight = GetFlightFromFirestore(flightId);
+            CollectionReference collection = firestoreDb.Collection("chuyenbay");
+            QuerySnapshot querySnapshot = await collection.GetSnapshotAsync();
 
-            // Truyền thông tin chuyến bay và form đặt vé đến view
-            return View(new DatVeViewModel { ChuyenBayInf = flight, KhachHangInf = new KhachHang() });
+            return querySnapshot.Documents.Select(doc => doc.ConvertTo<ChuyenBay>()).ToList();
         }
 
-        [HttpPost]
-        public ActionResult BookFlight(DatVeViewModel viewModel)
+        public async Task<ChuyenBay> GetChuyenBayByIdAsync(string chuyenBayId)
         {
-
-            // Xử lý thông tin đặt vé và lưu vào Firestore
-            firestoreDb.Collection("VeMayBay").AddAsync(viewModel);
-
-            return RedirectToAction("ThankYou");
-        }
-
-        private ChuyenBay GetFlightFromFirestore(string flightId)
-        {
-            string collectionPath = "ChuyenBay";
-
-            // Truy vấn Firestore để lấy thông tin chuyến bay dựa trên flightId
-            DocumentReference docRef = firestoreDb.Collection(collectionPath).Document(flightId);
-            DocumentSnapshot snapshot = docRef.GetSnapshotAsync().Result;
+            DocumentReference docRef = firestoreDb.Collection("ChuyenBay").Document(chuyenBayId);
+            DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
 
             if (snapshot.Exists)
             {
-                // Chuyển đổi dữ liệu từ snapshot thành đối tượng Flight
-                ChuyenBay flight = snapshot.ConvertTo<ChuyenBay>();
-                return flight;
+                return snapshot.ConvertTo<ChuyenBay>();
             }
             else
             {
-                // Xử lý trường hợp không tìm thấy chuyến bay
                 return null;
+            }
+        }
+
+        public async Task<bool> DatVeAsync(string chuyenBayId, string khachHangId)
+        {
+            // Thực hiện logic đặt vé tại đây, ví dụ: cập nhật trạng thái của chuyến bay
+            DocumentReference docRef = firestoreDb.Collection("ChuyenBay").Document(chuyenBayId);
+
+            CollectionReference veCollectionRef = firestoreDb.Collection("VeMayBay");
+            DocumentReference veDocRef = await veCollectionRef.AddAsync(new
+            {
+                ChuyenBayID = chuyenBayId,
+                KhachHangId = khachHangId,
+            });
+
+            string veId = veDocRef.Id;
+
+            return true; 
+        }
+
+        public async Task<ActionResult> DatVe(string chuyenBayId)
+        {
+            ViewBag.ChuyenBayId = chuyenBayId;
+
+            ChuyenBay chuyenBay = await GetChuyenBayByIdAsync(chuyenBayId);
+
+            return View(chuyenBay);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> DatVeConfirm(string chuyenBayId, string khachHangId)
+        {
+            bool datVeSuccess = await DatVeAsync(chuyenBayId, khachHangId);
+
+            if (datVeSuccess)
+            {
+                
+                return RedirectToAction("index", "Home");
+            }
+            else
+            {
+                
+                return View("Error");
             }
         }
     }

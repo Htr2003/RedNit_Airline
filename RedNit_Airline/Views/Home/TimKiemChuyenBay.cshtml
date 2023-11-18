@@ -104,31 +104,5 @@
     }
 </div>
 
-<script>
-    // Bước 1: Xác định cơ sở dữ liệu Firestore
-    var db = FirestoreDb.firestore();
 
-    // Bước 2: Truy xuất dữ liệu từ Firestore
-    var flightId = item.ChuyenBayID;
-
-    // Thay đổi 'ten_collection' thành tên collection trong Firestore của bạn
-    var flightsCollection = db.collection('ChuyenBay');
-
-    flightsCollection.where('ChuyenBayID', '==', flightId)
-        .get()
-        .then((querySnapshot) => {
-            if (!querySnapshot.empty) {
-                // Bước 3: Làm bất cứ điều gì bạn muốn với tài liệu đã tìm thấy
-                var doc = querySnapshot.docs[0];
-                var documentId = doc.id;
-                // Tiếp tục xử lý
-            } else {
-                console.log('Không tìm thấy chuyến bay với flightId: ' + flightId);
-            }
-        })
-        .catch((error) => {
-            console.error('Lỗi khi truy xuất dữ liệu từ Firestore: ', error);
-        });
-
-</script>
 

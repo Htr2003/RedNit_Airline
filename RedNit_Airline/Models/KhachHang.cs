@@ -9,6 +9,8 @@ namespace RedNit_Airline.Models
     public class KhachHang
     {
         [FirestoreProperty]
+        public string KhachHangID { get; set; }
+        [FirestoreProperty]
         public string HoTen { get; set; }
         [FirestoreProperty]
         public Timestamp NgaySinh { get; set; }
