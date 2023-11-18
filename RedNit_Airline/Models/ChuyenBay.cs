@@ -9,6 +9,8 @@ namespace RedNit_Airline.Models
     public class ChuyenBay
     {
         [FirestoreProperty]
+        public string ChuyenBayID { get; set; }
+        [FirestoreProperty]
         public string DiemDi { get; set; }
 
         [FirestoreProperty]

@@ -217,6 +217,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ChuyenBay.cs" />
+    <Compile Include="Models\DatVeViewModel.cs" />
     <Compile Include="Models\KhachHang.cs" />
     <Compile Include="Models\SanBay.cs" />
     <Compile Include="Models\VeMayBay.cs" />
@@ -308,6 +309,7 @@
     <Content Include="Views\Shared\_HomeLayout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\TimKiemChuyenBay.cshtml" />
+    <Content Include="Views\Home\BookFlight.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

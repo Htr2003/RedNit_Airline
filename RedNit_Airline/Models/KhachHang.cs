@@ -21,5 +21,7 @@ namespace RedNit_Airline.Models
 
         [FirestoreProperty]
         public string Sdt { get; set; }
+        [FirestoreProperty]
+        public string Email { get; set; }
     }
 }

@@ -98,6 +98,7 @@ namespace RedNit_Airline.Controllers
                 {
                     DiemDi = documentSnapshot.GetValue<string>("DiemDi"),
                     DiemDen = documentSnapshot.GetValue<string>("DiemDen"),
+                    GioKhoiHanh = documentSnapshot.GetValue<string>("GioBatDau"),
                     NgayDi = documentSnapshot.GetValue<string>("NgayDi"),
                     NgayVe = documentSnapshot.GetValue<string>("NgayVe")
                     // Other property assignments...
@@ -107,6 +108,47 @@ namespace RedNit_Airline.Controllers
             }
 
             return View("TimKiemChuyenBay", ketQua);
+        }
+
+        [HttpGet]
+        public ActionResult BookFlight(string flightId)
+        {
+            // Lấy thông tin chuyến bay từ Firestore
+            ChuyenBay flight = GetFlightFromFirestore(flightId);
+
+            // Truyền thông tin chuyến bay và form đặt vé đến view
+            return View(new DatVeViewModel { ChuyenBayInf = flight, KhachHangInf = new KhachHang() });
+        }
+
+        [HttpPost]
+        public ActionResult BookFlight(DatVeViewModel viewModel)
+        {
+
+            // Xử lý thông tin đặt vé và lưu vào Firestore
+            firestoreDb.Collection("VeMayBay").AddAsync(viewModel);
+
+            return RedirectToAction("ThankYou");
+        }
+
+        private ChuyenBay GetFlightFromFirestore(string flightId)
+        {
+            string collectionPath = "ChuyenBay";
+
+            // Truy vấn Firestore để lấy thông tin chuyến bay dựa trên flightId
+            DocumentReference docRef = firestoreDb.Collection(collectionPath).Document(flightId);
+            DocumentSnapshot snapshot = docRef.GetSnapshotAsync().Result;
+
+            if (snapshot.Exists)
+            {
+                // Chuyển đổi dữ liệu từ snapshot thành đối tượng Flight
+                ChuyenBay flight = snapshot.ConvertTo<ChuyenBay>();
+                return flight;
+            }
+            else
+            {
+                // Xử lý trường hợp không tìm thấy chuyến bay
+                return null;
+            }
         }
     }
 }

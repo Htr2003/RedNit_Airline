@@ -1,35 +1,134 @@
-﻿@model IEnumerable<RedNit_Airline.Models.ChuyenBay> 
+﻿@model IEnumerable<RedNit_Airline.Models.ChuyenBay>
 
 @{
     ViewBag.Title = "TimKiemChuyenBay";
     Layout = "~/Views/Shared/_HomeLayout.cshtml";
-}
 
-@if (Model != null)
-{
-    <table>
-        <tr>
-            <th>Điểm Đi</th>
-            <th>Điểm Đến</th>
-            <th>Ngày Đi</th>
-            <th>Ngày Về</th>
-            <!-- Thêm các cột khác của ChuyenBay theo cần thiết -->
-        </tr>
-
-        @foreach (var chuyenBay in Model)
-        {
-            <tr>
-                <td>@chuyenBay.DiemDi</td>
-                <td>@chuyenBay.DiemDen</td>
-                <td>@chuyenBay.NgayDi</td>
-                <td>@chuyenBay.NgayVe</td>
-                <!-- Thêm các cột khác của ChuyenBay theo cần thiết -->
-            </tr>
+    <style>
+        .flight-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
         }
-    </table>
+
+        .flight-item {
+            border: 2px solid hidden;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 15px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+
+
+        .flight-details {
+            margin-top: 10px;
+            font-size: 18px;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .flight-time {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-size: 18px;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .flight-price {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-size: 18px; /* Kích thước font chữ tăng lên */
+            float: left;
+            width: 30%;
+        }
+
+        .flight-actions a {
+            margin-top: 25px;
+            margin-right: 10px;
+            color: #fff;
+            padding: 4px 4px 4px 4px;
+            border-radius: 4px;
+            border-width: 5px;
+            background-color: #C7626F;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+            .flight-actions a:hover {
+                color: #fff !important;
+                border: 1px solid #fff;
+            }
+    </style>
 }
-else
-{
-    <p>Không tìm thấy chuyến bay phù hợp.</p>
-}
+
+<h2 style="text-align: center; padding: 10px 0 20px 0; color: #C7626F; ">Danh Sách Chuyến Bay</h2>
+
+<div class="flight-list ">
+    @foreach (var item in Model)
+    {
+        <div class="flight-item shadow-lg">
+            <div>
+                <div class="flight-details ">
+                    <strong> Sân khởi hành: </strong>@Html.DisplayFor(modelItem => item.DiemDi)
+                </div>
+                <div class="flight-details" style="margin-right:30px;">
+                    <strong> Sân đến: </strong>@Html.DisplayFor(modelItem => item.DiemDen)
+                </div>
+
+               
+            </div>
+
+            <div>
+                <div class="flight-time">
+                    <strong> Giờ khởi hành: </strong>@Html.DisplayFor(modelItem => item.GioKhoiHanh)
+                </div>
+                <div class="flight-time">
+                    <strong> Giờ đến: </strong>@Html.DisplayFor(modelItem => item.NgayDi)
+                </div>
+            </div>
+
+
+            <div class="flight-actions">
+                <a href="@Url.Action("BookFlight", "Home", new { flightId = item.ChuyenBayID })">Buy Ticket</a>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    // Bước 1: Xác định cơ sở dữ liệu Firestore
+    var db = FirestoreDb.firestore();
+
+    // Bước 2: Truy xuất dữ liệu từ Firestore
+    var flightId = item.ChuyenBayID;
+
+    // Thay đổi 'ten_collection' thành tên collection trong Firestore của bạn
+    var flightsCollection = db.collection('ChuyenBay');
+
+    flightsCollection.where('ChuyenBayID', '==', flightId)
+        .get()
+        .then((querySnapshot) => {
+            if (!querySnapshot.empty) {
+                // Bước 3: Làm bất cứ điều gì bạn muốn với tài liệu đã tìm thấy
+                var doc = querySnapshot.docs[0];
+                var documentId = doc.id;
+                // Tiếp tục xử lý
+            } else {
+                console.log('Không tìm thấy chuyến bay với flightId: ' + flightId);
+            }
+        })
+        .catch((error) => {
+            console.error('Lỗi khi truy xuất dữ liệu từ Firestore: ', error);
+        });
+
+</script>
 

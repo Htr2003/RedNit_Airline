@@ -10,6 +10,8 @@ namespace RedNit_Airline.Models
     public class VeMayBay
     {
         [FirestoreProperty]
+        public string VeID { get; set; }
+        [FirestoreProperty]
         public string ChuyenBayID { get; set; }
 
         [FirestoreProperty]
