@@ -97,18 +97,21 @@
                 <input type="text" id="totalPassengers" name="TotalPassengers" readonly onclick="toggleInputsVisibility()" />
                 <div id="hanhKhach" style="display: none;">
                     <div class="numeric-input" id="numericInputAdult">
-                        <input type="number" id="soNguoiLon" name="SoNguoiLon" min="0" value="0" />
+                        <div>Số lượng người lớn</div>
                         <button type="button" onclick="changePassengerCount('soNguoiLon', 1)">+</button>
+                        <input type="number" id="soNguoiLon" name="SoNguoiLon" min="0" value="0" />
                         <button type="button" onclick="changePassengerCount('soNguoiLon', -1)">-</button>
                     </div>
                     <div class="numeric-input" id="numericInputChild">
-                        <input type="number" id="soTreEm" name="SoTreEm" min="0" value="0" />
+                        <div>Số lượng trẻ em(2 - 12t)</div>
                         <button type="button" onclick="changePassengerCount('soTreEm', 1)">+</button>
+                        <input style="padding-inline:-10px;" type="number" id="soTreEm" name="SoTreEm" min="0" value="0" />
                         <button type="button" onclick="changePassengerCount('soTreEm', -1)">-</button>
                     </div>
                     <div class="numeric-input" id="numericInputInfant">
-                        <input type="number" id="soTreEmDuoi2" name="SoTreEmDuoi2" min="0" value="0" />
+                        <div>Số lượng trẻ em dưới 2t</div>
                         <button type="button" onclick="changePassengerCount('soTreEmDuoi2', 1)">+</button>
+                        <input type="number" id="soTreEmDuoi2" name="SoTreEmDuoi2" min="0" value="0" />
                         <button type="button" onclick="changePassengerCount('soTreEmDuoi2', -1)">-</button>
                     </div>
                 </div>
