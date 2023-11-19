@@ -92,13 +92,20 @@
                     <strong> Giờ khởi hành: </strong>@Html.DisplayFor(modelItem => item.GioKhoiHanh)
                 </div>
                 <div class="flight-time">
-                    <strong> Giờ đến: </strong>@Html.DisplayFor(modelItem => item.NgayDi)
+                    <strong> Ngày khởi hành: </strong>@Html.DisplayFor(modelItem => item.NgayDi)
                 </div>
             </div>
 
 
             <div class="flight-actions">
-                <a href="@Url.Action("BookFlight", "Home", new { flightId = item.ChuyenBayID })">Buy Ticket</a>
+                @if (!string.IsNullOrEmpty(item.ChuyenBayID))
+                {
+                    <a href="@Url.Action("DatVe", new { chuyenBayId = item.ChuyenBayID })">Đặt vé</a>
+                }
+                else
+                {
+                    <span>ChuyenBayID is null or empty</span>
+                }
             </div>
         </div>
     }

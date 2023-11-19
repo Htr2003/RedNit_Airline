@@ -1,0 +1,72 @@
+﻿@model RedNit_Airline.Models.ChuyenBay
+
+@{
+    ViewBag.Title = "DatVeConfirm";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<div class="parent-container" style="font-size:15px;">
+    <div class="form-container">
+        @using (Html.BeginForm("DatVe", "Home", new { chuyenBayId = ViewBag.ChuyenBayId }, FormMethod.Post))
+        {
+            <h2 style="color: #C7626F">Thông tin cá nhân</h2>
+            <p>@ViewBag.SuccessMessage</p>
+            <div class="form-group">
+                <label for="hoTen">Họ và tên:</label>
+                <input type="text" id="hoTen" name="HoTen" required>
+            </div>
+
+            <div class="form-group">
+                <label for="soDienThoai">Số điện thoại:</label>
+                <input type="tel" id="soDienThoai" name="Sdt" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="Email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="ghiChu">Giới tính</label>
+                <input id="ghiChu" name="GioiTinh" rows="3">
+            </div>
+
+            <input type="submit" value="Xác nhận">
+        }
+
+    </div>
+
+
+    <div class="formInfo-container">
+        @using (Html.BeginForm("DatVe", "Home", FormMethod.Post))
+        {
+            @Html.HiddenFor(m => m.ChuyenBayID)
+            <h2>Booking Details</h2>
+            <div class="form-group">
+                <label for="from">Sân khởi hành: </label>
+                <input value="@Html.DisplayFor(model => model.DiemDi)" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="to">Sân đến: </label>
+                <input value="@Html.DisplayFor(model => model.DiemDen)" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="to">giờ khởi hành: </label>
+                <input value="@Html.DisplayFor(model => model.GioKhoiHanh)" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="datetime">ngày đi: </label>
+                <input value="@Html.DisplayFor(model => model.NgayDi)" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="datetime">giá: </label>
+                <input value="@Html.DisplayFor(model => model.Gia)" readonly>
+            </div>
+        }
+    </div>
+</div>
+

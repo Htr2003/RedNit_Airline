@@ -100,8 +100,9 @@ namespace RedNit_Airline.Controllers
                     DiemDen = documentSnapshot.GetValue<string>("DiemDen"),
                     GioKhoiHanh = documentSnapshot.GetValue<string>("GioBatDau"),
                     NgayDi = documentSnapshot.GetValue<string>("NgayDi"),
-                    NgayVe = documentSnapshot.GetValue<string>("NgayVe")
-                    // Other property assignments...
+                    NgayVe = documentSnapshot.GetValue<string>("NgayVe"),
+                    ChuyenBayID = documentSnapshot.GetValue<string>("ChuyenBayID"),
+                    Gia = documentSnapshot.GetValue<string>("Gia"),
                 };
                 
                 ketQua.Add(chuyenBay);
@@ -110,25 +111,33 @@ namespace RedNit_Airline.Controllers
             return View("TimKiemChuyenBay", ketQua);
         }
 
-        public async Task<List<ChuyenBay>> GetDanhSachChuyenBayAsync()
-        {
-            CollectionReference collection = firestoreDb.Collection("chuyenbay");
-            QuerySnapshot querySnapshot = await collection.GetSnapshotAsync();
-
-            return querySnapshot.Documents.Select(doc => doc.ConvertTo<ChuyenBay>()).ToList();
-        }
-
         public async Task<ChuyenBay> GetChuyenBayByIdAsync(string chuyenBayId)
         {
-            DocumentReference docRef = firestoreDb.Collection("ChuyenBay").Document(chuyenBayId);
-            DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
+            CollectionReference chuyenBayCollection = firestoreDb.Collection("ChuyenBay");
+            Query query = chuyenBayCollection.WhereEqualTo("ChuyenBayID", chuyenBayId);
+            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
 
-            if (snapshot.Exists)
+            // Check if any documents match the query
+            if (querySnapshot.Documents.Count > 0)
             {
-                return snapshot.ConvertTo<ChuyenBay>();
+                // Assuming you want the first matching document
+                DocumentSnapshot documentSnapshot = querySnapshot.Documents[0];
+
+                // Serialize Firestore document to JSON
+                IDictionary<string, object> documentData = documentSnapshot.ToDictionary();
+
+                // Serialize dictionary to JSON
+                string json = JsonConvert.SerializeObject(documentData);
+
+                // Deserialize JSON to ChuyenBay
+                ChuyenBay chuyenBay = JsonConvert.DeserializeObject<ChuyenBay>(json);
+
+
+                return chuyenBay;
             }
             else
             {
+                // No matching document found
                 return null;
             }
         }
@@ -136,22 +145,34 @@ namespace RedNit_Airline.Controllers
         public async Task<bool> DatVeAsync(string chuyenBayId, string khachHangId)
         {
             // Thực hiện logic đặt vé tại đây, ví dụ: cập nhật trạng thái của chuyến bay
-            DocumentReference docRef = firestoreDb.Collection("ChuyenBay").Document(chuyenBayId);
+           // DocumentReference docRef = firestoreDb.Collection("ChuyenBay").Document(chuyenBayId);
 
             CollectionReference veCollectionRef = firestoreDb.Collection("VeMayBay");
             DocumentReference veDocRef = await veCollectionRef.AddAsync(new
             {
                 ChuyenBayID = chuyenBayId,
-                KhachHangId = khachHangId,
-            });
+                KhachHangID = khachHangId,
+                GiaVe = "",
+                HangGhe = "",
+                LoaiVe = "",
+                TrangThaiChuyenBay = "",
+                TrangThaiVe = "",
+
+            });;
 
             string veId = veDocRef.Id;
 
             return true; 
         }
 
+        [HttpGet]
         public async Task<ActionResult> DatVe(string chuyenBayId)
         {
+            if (string.IsNullOrEmpty(chuyenBayId))
+            {
+                ViewBag.ErrorMessage = "ChuyenBayID is null or empty.";
+                return View("Error");
+            }
             ViewBag.ChuyenBayId = chuyenBayId;
 
             ChuyenBay chuyenBay = await GetChuyenBayByIdAsync(chuyenBayId);
@@ -160,9 +181,11 @@ namespace RedNit_Airline.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> DatVeConfirm(string chuyenBayId, string khachHangId)
+        public async Task<ActionResult> DatVe(ChuyenBay model, /*string chuyenBayId,*/ string khachHangId)
         {
-            bool datVeSuccess = await DatVeAsync(chuyenBayId, khachHangId);
+            //chuyenBayId = model.ChuyenBayID;
+            bool datVeSuccess = await DatVeAsync(model.ChuyenBayID, khachHangId);
+
 
             if (datVeSuccess)
             {
