@@ -27,6 +27,11 @@
                 ngayVe.style.display = 'block';
 
             }
+
+            var journeyTypeInput = document.getElementById("JourneyType");
+            if (journeyTypeInput) {
+                journeyTypeInput.value = type;
+            }
         }
 
         function changePassengerCount(fieldId, change) {

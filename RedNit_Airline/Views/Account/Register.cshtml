@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<head>
+    <style>
+        #titleRegister {
+            margin-left: 35%;
+            font-size: 18px;
+        }
+
+        #inputRegister {
+            width: 30%;
+            margin-left: 35%;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<div style="margin: 10px auto;width:70%;">
+    <h2 style="text-align: center; padding-top: 30px; font-size: 30px;">ĐĂNG KÍ</h2>
+    @using (Html.BeginForm("Register", "Account"))
+    {
+        @Html.ValidationSummary(true)
+        <div class="mb-3 mt-3">
+            <label id="titleRegister" for="gender" class="form-label">email:</label>
+            <input type="email" class="form-control" id="inputRegister" name="Email" required>
+        </div>
+
+        <div class="mb-3 mt-3">
+            <label id="titleRegister" for="gender" class="form-label">password:</label>
+            <input type="text" class="form-control" id="inputRegister" name="Sdt" required>
+            
+        </div>
+
+        <button style=" margin-left: 47% ; border-radius:20px" type="submit" background-color="#C7626F" class="btn btn-primary">XÁC NHẬN</button>
+    }
+
+</div>

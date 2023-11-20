@@ -142,23 +142,40 @@ namespace RedNit_Airline.Controllers
             }
         }
 
-        public async Task<bool> DatVeAsync(string chuyenBayId, string khachHangId)
+        public async Task<bool> DatVeAsync(ChuyenBay chuyenBay, string khachHangId)
         {
             // Thực hiện logic đặt vé tại đây, ví dụ: cập nhật trạng thái của chuyến bay
-           // DocumentReference docRef = firestoreDb.Collection("ChuyenBay").Document(chuyenBayId);
+            // DocumentReference docRef = firestoreDb.Collection("ChuyenBay").Document(chuyenBayId);
 
             CollectionReference veCollectionRef = firestoreDb.Collection("VeMayBay");
-            DocumentReference veDocRef = await veCollectionRef.AddAsync(new
+
+            // Create a reference to the ChuyenBay document
+            DocumentReference chuyenBayRef = firestoreDb.Collection("ChuyenBay").Document(chuyenBay.ChuyenBayID);
+
+            // Add the ChuyenBay reference to the VeMayBay document
+            VeMayBay veMayBayDto = new VeMayBay
             {
-                ChuyenBayID = chuyenBayId,
+                ChuyenBayID = chuyenBayRef.Id,
                 KhachHangID = khachHangId,
                 GiaVe = "",
                 HangGhe = "",
                 LoaiVe = "",
-                TrangThaiChuyenBay = "",
-                TrangThaiVe = "",
+                TrangThaiBay = "Đang chờ",
+               
+            };
 
-            });;
+            var veMayBayData = new Dictionary<string, object>
+            {
+                { "ChuyenBayID", veMayBayDto.ChuyenBayID },
+                { "KhachHangID", veMayBayDto.KhachHangID },
+                { "GiaVe", veMayBayDto.GiaVe },
+                { "HangGhe", veMayBayDto.HangGhe },
+                { "LoaiVe", veMayBayDto.LoaiVe },
+                { "TrangThaiBay", veMayBayDto.TrangThaiBay },
+            };
+
+            // Add the ChuyenBay reference to the VeMayBay document
+            DocumentReference veDocRef = await veCollectionRef.AddAsync(veMayBayData);
 
             string veId = veDocRef.Id;
 
@@ -181,22 +198,21 @@ namespace RedNit_Airline.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> DatVe(ChuyenBay model, /*string chuyenBayId,*/ string khachHangId)
+        public async Task<ActionResult> DatVe(ChuyenBay model, string khachHangId)
         {
-            //chuyenBayId = model.ChuyenBayID;
-            bool datVeSuccess = await DatVeAsync(model.ChuyenBayID, khachHangId);
+            ChuyenBay chuyenBay = await GetChuyenBayByIdAsync(model.ChuyenBayID);
 
+            if (chuyenBay != null)
+            {
+                bool datVeSuccess = await DatVeAsync(chuyenBay, khachHangId);
 
-            if (datVeSuccess)
-            {
-                
-                return RedirectToAction("index", "Home");
+                if (datVeSuccess)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            else
-            {
-                
-                return View("Error");
-            }
+
+            return View("Error");
         }
     }
 }

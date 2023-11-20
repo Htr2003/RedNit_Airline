@@ -27,6 +27,7 @@ namespace RedNit_Airline.Models
         public string TrangThaiBay { get; set; }
 
         [FirestoreProperty]
-        public string price { get; set; }
+        public string GiaVe { get; set; }
+       
     }
 }
