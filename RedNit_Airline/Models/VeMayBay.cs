@@ -9,8 +9,8 @@ namespace RedNit_Airline.Models
 {
     public class VeMayBay
     {
-        [FirestoreProperty]
-        public string VeID { get; set; }
+        [FirestoreDocumentId]
+        public string VeMayBayID { get; set; }
         [FirestoreProperty]
         public string ChuyenBayID { get; set; }
 
@@ -24,10 +24,11 @@ namespace RedNit_Airline.Models
         public string LoaiVe { get; set; }
 
         [FirestoreProperty]
-        public string TrangThaiBay { get; set; }
+        public Boolean TrangThaiVe { get; set; }
 
         [FirestoreProperty]
         public string GiaVe { get; set; }
-       
+        public string NgayDi { get; internal set; }
+        public string GioDi { get; internal set; }
     }
 }

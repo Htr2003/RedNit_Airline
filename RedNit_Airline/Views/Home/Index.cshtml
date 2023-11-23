@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_HomeLayout.cshtml";
     <link href="~/Content/imageStyle.css" rel="stylesheet" />
 
+   
 }
 
 <div class="banner">
@@ -12,7 +13,121 @@
     <img src="~/Content/img/banner3.jpg" alt="Image 3" class="banner-image" />
 </div>
 
-<body>
+
+<head>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: none;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .buttons-row {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .buttons-row button {
+                background-color: #004578; /* Color #004578 */
+                color: white;
+                padding: 10px 20px;
+                margin: 0 10px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+                .buttons-row button:hover {
+                    background-color: #002548; /* Darker shade on hover */
+                }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .column {
+            flex: 1;
+            margin: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        select,
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .total-passenger-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .numeric-input {
+            margin-right: 20px;
+        }
+
+            .numeric-input button {
+                background-color: #004578; /* Color #004578 */
+                color: white;
+                padding: 5px 10px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+                .numeric-input button:hover {
+                    background-color: #002548; /* Darker shade on hover */
+                }
+
+            .numeric-input input {
+                width: 30px;
+                text-align: center;
+            }
+
+        #hanhKhach {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .button-container {
+            text-align: center;
+        }
+
+        input[type="submit"] {
+            background-color: #E29E1B; /* Color #004578 */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+            input[type="submit"]:hover {
+                background-color: #002548; /* Darker shade on hover */
+            }
+    </style>
+</head>
+<body class="shadow-lg">
     <script>
         function changeForm(type) {
             var ngayVe = document.getElementById('ngayVe');
@@ -98,7 +213,7 @@
             </div>
 
             <div class="total-passenger-row">
-                <label for="totalPassengers">Hành khách:</label>
+                <label for="totalPassengers">Hành khách: </label>
                 <input type="text" id="totalPassengers" name="TotalPassengers" readonly onclick="toggleInputsVisibility()" />
                 <div id="hanhKhach" style="display: none;">
                     <div class="numeric-input" id="numericInputAdult">

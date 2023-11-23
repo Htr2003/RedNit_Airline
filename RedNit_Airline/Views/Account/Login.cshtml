@@ -1,4 +1,5 @@
-﻿
+﻿@model RedNit_Airline.Models.KhachHang
+
 @{
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_HomeLayout.cshtml";
@@ -62,25 +63,32 @@
     }
 </style>
 
-@using (Html.BeginForm("login", "Account"))
+@using (Html.BeginForm("Login", "Account", FormMethod.Post))
 {
-    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
 
-    <body>
-        <div class="login-container">
-            <h2 style="padding-bottom: 19px;">Login</h2>
-            <form class="login-form">
-                <div class="form-group">
-                    <label for="username">Email</label>
-                    <input type="text" id="username" name="TenDangNhap" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="MatKhau" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Login</button>
-            </form>
-        </div>
-    </body>
+<body>
+    <div class="login-container">
+        <h2 style="padding-bottom: 19px;">Login</h2>
+        <form class="login-form">
+            <div class="form-group">
+                <label for="username">Gmail</label>
+                <input type="text" id="username" name="gmail" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="matKhau" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
+</body>
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
 }
 

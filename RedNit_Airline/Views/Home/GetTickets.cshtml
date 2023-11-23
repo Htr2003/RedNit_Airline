@@ -1,0 +1,32 @@
+﻿@model IEnumerable<RedNit_Airline.Models.VeMayBay>
+
+@{
+    ViewBag.Title = "GetTickets";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<h2>Danh sách vé</h2>
+
+<table class="table">
+    <tr>
+        <th>ID Vé</th>
+        <th>Chuyến Bay ID</th>
+        <th>Giá Vé</th>
+        <th>Ngày Đi</th>
+        <th>Giờ Đi</th>
+        <th>Trạng Thái Vé</th>
+    </tr>
+
+    @foreach (var ticket in Model)
+    {
+        <tr>
+            <td>@ticket.VeMayBayID</td>
+            <td>@ticket.ChuyenBayID</td>
+            <td>@ticket.GiaVe</td>
+            <td>@ticket.NgayDi</td>
+            <td>@ticket.GioDi</td>
+            <td>@ticket.TrangThaiVe</td>
+        </tr>
+    }
+</table>
+

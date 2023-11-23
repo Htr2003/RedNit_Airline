@@ -160,7 +160,7 @@ namespace RedNit_Airline.Controllers
                 GiaVe = "",
                 HangGhe = "",
                 LoaiVe = "",
-                TrangThaiBay = "Đang chờ",
+                TrangThaiVe = false,
                
             };
 
@@ -171,7 +171,7 @@ namespace RedNit_Airline.Controllers
                 { "GiaVe", veMayBayDto.GiaVe },
                 { "HangGhe", veMayBayDto.HangGhe },
                 { "LoaiVe", veMayBayDto.LoaiVe },
-                { "TrangThaiBay", veMayBayDto.TrangThaiBay },
+                { "TrangThaiBay", veMayBayDto.TrangThaiVe },
             };
 
             // Add the ChuyenBay reference to the VeMayBay document
@@ -213,6 +213,96 @@ namespace RedNit_Airline.Controllers
             }
 
             return View("Error");
+        }
+
+        public ActionResult GetTickets()
+        {
+            // Lấy KhachHangID từ session
+            string loggedInCustomerId = Session["LoggedInCustomerId"] as string;
+
+            if (!string.IsNullOrEmpty(loggedInCustomerId))
+            {
+                // Gọi hàm để lấy danh sách vé cho khách hàng
+                var tickets = GetTicketsForCustomer(loggedInCustomerId);
+
+                // Sử dụng danh sách vé trong view hoặc thực hiện các xử lý khác
+                return View(tickets);
+            }
+            else
+            {
+                // Redirect hoặc xử lý khi chưa đăng nhập
+                return RedirectToAction("Login", "Account");
+            }
+        }
+
+        private List<VeMayBay> GetTicketsForCustomer(string khachHangId)
+        {
+            var veMayBayCollection = firestoreDb.Collection("VeMayBay");
+
+            // Thực hiện truy vấn để lấy danh sách vé cho khách hàng có KhachHangID tương ứng
+            var query = veMayBayCollection.WhereEqualTo("KhachHangID", khachHangId);
+
+            var querySnapshot = query.GetSnapshotAsync().Result;
+
+            var tickets = new List<VeMayBay>();
+
+            foreach (var document in querySnapshot.Documents)
+            {
+                var ticket = ConvertToVeMayBay(document);
+                tickets.Add(ticket);
+            }
+
+            return tickets;
+        }
+
+        private VeMayBay ConvertToVeMayBay(DocumentSnapshot document)
+        {
+            // Tạo đối tượng VeMayBay từ dữ liệu của Firestore
+            var veMayBay = new VeMayBay
+            {
+                VeMayBayID = document.Id,
+                ChuyenBayID = document.GetValue<string>("ChuyenBayID"),
+                KhachHangID = document.GetValue<string>("KhachHangID"),
+                TrangThaiVe = document.GetValue<bool>("TrangThaiVe"),
+                GiaVe = document.GetValue<string>("giaVe"),
+            };
+
+            // Lấy dữ liệu từ ChuyenBay dựa trên ChuyenBayID
+            var chuyenBay = GetChuyenBay(veMayBay.ChuyenBayID);
+
+            if (chuyenBay != null)
+            {
+                // Gán dữ liệu từ ChuyenBay vào veMayBay
+                veMayBay.NgayDi = chuyenBay.NgayDi;
+                veMayBay.GioDi = chuyenBay.GioKhoiHanh;
+            }
+
+            return veMayBay;
+        }
+
+        private ChuyenBay GetChuyenBay(string chuyenBayId)
+        {
+            var chuyenBayCollection = firestoreDb.Collection("ChuyenBay");
+
+            var chuyenBayDocument = chuyenBayCollection.Document(chuyenBayId).GetSnapshotAsync().Result;
+
+            if (chuyenBayDocument.Exists)
+            {
+                var chuyenBayData = chuyenBayDocument.ToDictionary();
+
+                // Manually map fields to ChuyenBay model
+                var chuyenBay = new ChuyenBay
+                {
+                    ChuyenBayID = chuyenBayDocument.Id,
+                    NgayDi = chuyenBayData.ContainsKey("GioBatDau") ? chuyenBayData["GioBatDau"].ToString() : null,
+                    GioKhoiHanh = chuyenBayData.ContainsKey("NgayDi") ? chuyenBayData["NgayDi"].ToString() : null,
+                    // Map other fields as needed
+                };
+
+                return chuyenBay;
+            }
+
+            return null;
         }
     }
 }

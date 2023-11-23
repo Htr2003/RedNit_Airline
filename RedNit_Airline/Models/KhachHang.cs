@@ -8,7 +8,7 @@ namespace RedNit_Airline.Models
 {
     public class KhachHang
     {
-        [FirestoreProperty]
+        [FirestoreDocumentId]
         public string KhachHangID { get; set; }
         [FirestoreProperty]
         public string HoTen { get; set; }
@@ -24,6 +24,8 @@ namespace RedNit_Airline.Models
         [FirestoreProperty]
         public string Sdt { get; set; }
         [FirestoreProperty]
-        public string Email { get; set; }
+        public string Gmail { get; set; }
+        [FirestoreProperty]
+        public string MatKhau { get; set; }
     }
 }
