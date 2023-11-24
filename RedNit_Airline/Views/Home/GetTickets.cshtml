@@ -3,30 +3,82 @@
 @{
     ViewBag.Title = "GetTickets";
     Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <style>
+        .tag {
+            display: inline-block;
+            border: 2px solid #004578;
+            
+            padding: 5px;
+            color: #ffffff;
+            background-color: #004578;
+            margin-bottom:15px;
+        }
+    </style>
 }
+<div style="text-align: center;">
+    <h2 class="tag">Lịch sử đặt vé</h2>
+</div>
 
-<h2>Danh sách vé</h2>
+<div class="shadow-lg" style="font-size:15px; margin-bottom:30px; text-align: center; ">
+    <div style="border-radius: 20px; overflow: hidden;">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ID Vé</th>
+                    <th>Chuyến Bay ID</th>
+                    <th>Giá Vé</th>
+                    <th>Ngày Đi</th>
+                    <th>Giờ Đi</th>
+                    <th>Trạng Thái Vé</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ticket in Model)
+                {
+                    <tr>
+                        <td>@ticket.VeMayBayID</td>
+                        <td>@ticket.ChuyenBayID</td>
+                        <td>@ticket.GiaVe</td>
+                        <td>@ticket.NgayDi</td>
+                        <td>@ticket.GioDi</td>
+                        <td>
+                            @if (ticket.TrangThaiVe == true)
+                            {
+                                <span style="color: red;">Đã Hủy</span>
+                            }
+                            else
+                            {
+                                <a href="javascript:void(0);" class="btn btn-danger cancel-link" data-ticket-id="@ticket.VeMayBayID">Hủy Vé</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 
-<table class="table">
-    <tr>
-        <th>ID Vé</th>
-        <th>Chuyến Bay ID</th>
-        <th>Giá Vé</th>
-        <th>Ngày Đi</th>
-        <th>Giờ Đi</th>
-        <th>Trạng Thái Vé</th>
-    </tr>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $(".cancel-link").click(function () {
+                var ticketId = $(this).data("ticket-id");
 
-    @foreach (var ticket in Model)
-    {
-        <tr>
-            <td>@ticket.VeMayBayID</td>
-            <td>@ticket.ChuyenBayID</td>
-            <td>@ticket.GiaVe</td>
-            <td>@ticket.NgayDi</td>
-            <td>@ticket.GioDi</td>
-            <td>@ticket.TrangThaiVe</td>
-        </tr>
-    }
-</table>
+                // Show a confirmation dialog
+                if (confirm("Bạn có chắc chắn muốn hủy vé không?")) {
+                    // If user confirms, call the CancelTicket action
+                    $.post("/Home/CancelTicket", { veMayBayId: ticketId }, function (data) {
+                        // Reload the page on successful cancellation
+                        location.reload();
+                    });
+                }
+            });
+        });
+    </script>
+}
 

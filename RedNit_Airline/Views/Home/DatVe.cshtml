@@ -3,13 +3,79 @@
 @{
     ViewBag.Title = "DatVeConfirm";
     Layout = "~/Views/Shared/_HomeLayout.cshtml";
+
+    <style>
+        .parent-container {
+            display: flex;
+            margin-left: 170px;
+            align-items: flex-start;
+        }
+
+        .form-container,
+        .formInfo-container {
+            max-width: 400px;
+            padding: 70px 70px 70px 70px;
+            margin: 20px;
+            background-color: #f4f4f4;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+            .form-container h2,
+            .formInfo-container h2 {
+                color: #004578;
+                margin-bottom: 15px;
+                font-weight: bold;
+            }
+
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px 30px 10px 30px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+            input[type="submit"] {
+                background-color: #E29E1B;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+                input[type="submit"]:hover {
+                    background-color: #004578;
+                }
+
+            input[readonly] {
+                background-color: #ddd;
+                cursor: not-allowed;
+            }
+    </style>
 }
 
 <div class="parent-container" style="font-size:15px;">
     <div class="form-container">
         @using (Html.BeginForm("DatVe", "Home", new { chuyenBayId = ViewBag.ChuyenBayId }, FormMethod.Post))
         {
-            <h2 style="color: #C7626F">Thông tin cá nhân</h2>
+            <h2 >Thông tin cá nhân</h2>
             <p>@ViewBag.SuccessMessage</p>
             <div class="form-group">
                 <label for="hoTen">Họ và tên:</label>
@@ -41,7 +107,7 @@
         @using (Html.BeginForm("DatVe", "Home", FormMethod.Post))
         {
             @Html.HiddenFor(m => m.ChuyenBayID)
-           
+
             <h2>Booking Details</h2>
             <div class="form-group">
                 <label for="from">Sân khởi hành: </label>
@@ -51,11 +117,6 @@
             <div class="form-group">
                 <label for="to">Sân đến: </label>
                 <input value="@Html.DisplayFor(model => model.DiemDen)" readonly>
-            </div>
-
-            <div class="form-group">
-                <label for="to">giờ khởi hành: </label>
-                <input value="@Html.DisplayFor(model => model.GioKhoiHanh)" readonly>
             </div>
 
             <div class="form-group">

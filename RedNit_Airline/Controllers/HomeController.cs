@@ -304,5 +304,25 @@ namespace RedNit_Airline.Controllers
 
             return null;
         }
+        public ActionResult CancelTicket(string veMayBayId)
+        {
+            var veMayBayCollection = firestoreDb.Collection("VeMayBay");
+
+            var veMayBayDocument = veMayBayCollection.Document(veMayBayId).GetSnapshotAsync().Result;
+
+            if (veMayBayDocument.Exists)
+            {
+                // Cập nhật trạng thái vé thành true
+                veMayBayCollection.Document(veMayBayId).UpdateAsync("TrangThaiVe", true).Wait();
+
+                // Redirect hoặc thực hiện các xử lý khác sau khi hủy vé
+                return RedirectToAction("GetTickets");
+            }
+            else
+            {
+                // Xử lý khi vé không tồn tại
+                return RedirectToAction("GetTickets"); // hoặc trả về view thông báo lỗi
+            }
+        }
     }
 }
